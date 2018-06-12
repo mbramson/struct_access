@@ -1,6 +1,7 @@
 # StructAccess
 
-**TODO: Add description**
+StructAccess provides a generic implementation of the `Access` behaviour for
+the module where this library is used.
 
 ## Installation
 
