@@ -144,7 +144,7 @@ This module is simply a shortcut to avoid that boilerplate.
 
 ## Caveats
 
-### Access.pop
+### Access.pop/2
 
 One of the callbacks that needs to be implemented for the `Access` behavior is `c:Access.pop/2`.
 
