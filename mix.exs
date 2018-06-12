@@ -11,6 +11,7 @@ defmodule StructAccess.MixProject do
       description: description(),
       package: package(),
       deps: deps(),
+      docs: docs(),
       name: "StructAccess",
       source_url: "https://github.com/mbramson/struct_access"
     ]
@@ -44,5 +45,14 @@ defmodule StructAccess.MixProject do
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/mbramson/struct_access"}
     ]
+  end
+
+  defp docs do
+    [main: "getting-started",
+     formatter_opts: [gfm: true],
+     source_url: "https://github.com/mbramson/struct_access",
+     extras: [
+       "docs/Getting Started.md"
+    ]]
   end
 end
