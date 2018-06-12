@@ -21,7 +21,7 @@ end
 ## Why?
 
 Why might you want to do this? So that you can take advantage of standard
-elixir access functions including the very useful `Kernal.get_in/2` and
+elixir access functions including the very useful `Kernel.get_in/2` and
 `Kernel.put_in/2` functions with nested structs.
 
 ## How does it work?
@@ -141,3 +141,18 @@ end
 ```
 
 This module is simply a shortcut to avoid that boilerplate.
+
+## Caveats
+
+### Access.pop
+
+One of the callbacks that needs to be implemented for the `Access` behavior is `c:Access.pop/2`.
+
+The intention of this function is that it removes that specified key from the
+map/structure, returning both that value and the updated map/structure without
+that key.
+
+This makes a lot of sense for a `Map` or `Keyword`, but not so much a struct,
+where it is impossible to remove a key. As a compromise, for cases where pop
+must be used, the generic implementation used in `StructAccess` simply sets the
+value of the key to be popped to `nil`.
