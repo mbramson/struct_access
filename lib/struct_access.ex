@@ -30,7 +30,7 @@ defmodule StructAccess do
   end
 
   @impl Access
-  def pop(struct, key, default \\ nil) do
+  def pop(struct, key, default \\\\ nil) do
     StructAccess.pop(struct, key, default)
   end
 
