@@ -4,7 +4,6 @@ defmodule StructAccess do
 
   Implements the following callbacks for the struct where this module is used:
   - `c:Access.fetch/2`
-  - `c:Access.get/3`
   - `c:Access.get_and_update/3`
   - `c:Access.pop/2`
 

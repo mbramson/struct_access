@@ -13,7 +13,7 @@ dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:struct_access, "~> 1.0.0"}
+    {:struct_access, "~> 1.1.1"}
   ]
 end
 ```

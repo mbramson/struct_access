@@ -13,7 +13,7 @@ dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:struct_access, "~> 1.0.0"}
+    {:struct_access, "~> 1.1.1"}
   ]
 end
 ```
@@ -111,36 +111,32 @@ to a module is equivalent to adding the following to that module:
 ```
 @behaviour Access
 
-def fetch(struct, key), do: Map.fetch(struct, key)
-def get(struct, key, default \\ nil), do: Map.get(struct, key, default)
+defmacro __using__(_opts) do
+  quote do
+    @behaviour Access
 
-def get_and_update(struct, key, fun) when is_function(fun, 1) do
-  current = get(struct, key)
+    @impl Access
+    def fetch(struct, key), do: StructAccess.fetch(struct, key)
 
-  case fun.(current) do
-    {get, update} ->
-      {get, Map.put(struct, key, update)}
+    @impl Access
+    def get_and_update(struct, key, fun) when is_function(fun, 1) do
+      StructAccess.get_and_update(struct, key, fun)
+    end
 
-    :pop ->
-      pop(struct, key)
+    @impl Access
+    def pop(struct, key, default \\ nil) do
+      StructAccess.pop(struct, key, default)
+    end
 
-    other ->
-      raise "the given function must return a two-element tuple or :pop, got: #\{inspect(other)}"
-  end
-end
-
-def pop(struct, key, default \\ nil) do
-  case fetch(struct, key) do
-    {:ok, old_value} ->
-      {old_value, Map.put(struct, key, nil)}
-
-    :error ->
-      {default, struct}
+    defoverridable Access
   end
 end
 ```
 
 This module is simply a shortcut to avoid that boilerplate.
+
+If any of the implementations in `StructAccess` are not sufficient, they all
+can be overridden.
 
 ## Caveats
 
