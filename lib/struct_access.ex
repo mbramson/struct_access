@@ -53,38 +53,54 @@ defmodule StructAccess do
 
   This module is simply a shortcut to avoid that boilerplate.
   """
+
   defmacro __using__(_opts) do
     quote do
       @behaviour Access
 
-      def fetch(struct, key), do: Map.fetch(struct, key)
-      def get(struct, key, default \\ nil), do: Map.get(struct, key, default)
+      @impl Access
+      def fetch(struct, key), do: StructAccess.fetch(struct, key)
 
+      @impl Access
       def get_and_update(struct, key, fun) when is_function(fun, 1) do
-        current = get(struct, key)
-
-        case fun.(current) do
-          {get, update} ->
-            {get, Map.put(struct, key, update)}
-
-          :pop ->
-            pop(struct, key)
-
-          other ->
-            raise "the given function must return a two-element tuple or :pop, got: #{inspect(other)}"
-        end
+        StructAccess.get_and_update(struct, key, fun)
       end
 
+      @impl Access
       def pop(struct, key, default \\ nil) do
-        case fetch(struct, key) do
-          {:ok, old_value} ->
-            {old_value, Map.put(struct, key, nil)}
-
-          :error ->
-            {default, struct}
-        end
+        StructAccess.pop(struct, key, default)
       end
+
+      defoverridable Access
     end
   end
 
+  def fetch(struct, key), do: Map.fetch(struct, key)
+
+  def get(struct, key, default \\ nil), do: Map.get(struct, key, default)
+
+  def get_and_update(struct, key, fun) when is_function(fun, 1) do
+    current = get(struct, key)
+
+    case fun.(current) do
+      {get, update} ->
+        {get, Map.put(struct, key, update)}
+
+      :pop ->
+        pop(struct, key)
+
+      other ->
+        raise "the given function must return a two-element tuple or :pop, got: #{inspect(other)}"
+    end
+  end
+
+  def pop(struct, key, default \\ nil) do
+    case fetch(struct, key) do
+      {:ok, old_value} ->
+        {old_value, Map.put(struct, key, nil)}
+
+      :error ->
+        {default, struct}
+    end
+  end
 end
