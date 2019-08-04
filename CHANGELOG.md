@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.1.2
+* Further improves documentation
+
 ## v1.1.1
 * Improves documentation
 

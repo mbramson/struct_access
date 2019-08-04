@@ -4,7 +4,7 @@ defmodule StructAccess.MixProject do
   def project do
     [
       app: :struct_access,
-      version: "1.1.1",
+      version: "1.1.2",
       elixir: "~> 1.7",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
